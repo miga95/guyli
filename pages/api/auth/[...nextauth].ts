@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { PrismaClient } from '@prisma/client';
 
 import prisma from "@/app/lib/prisma";
 
@@ -15,17 +16,17 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password", placeholder: "Password" }
       },
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
-        const user = { id: "1", email: "test@test.fr", password: "testtest", name:"test miga"}
-
-        if (req.body.email === user.email && req.body.password === user.password) {
-          return user
-        } else {
-          // If you return null then an error will be displayed advising the user to check their details.
-          return null
-
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
-        }
+        const prismaClient = new PrismaClient();
+        const user = await prismaClient.user.findUnique({
+          where: {
+            email: credentials?.email,
+          },
+          include: {
+            accounts: true,
+          }
+        })
+        if(user && user.password === credentials?.password) return user;
+        return null;
       }
     }),
     GoogleProvider({
