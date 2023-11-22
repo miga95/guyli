@@ -63,10 +63,14 @@ model VerificationToken {
 }
 
 model Subscription {
-  id     Int              @id @default(autoincrement())
-  name   SubscriptionName @default(NETFLIX)
-  nb_max Int
-  price  Float
+  id         Int              @id @default(autoincrement())
+  name       SubscriptionName @default(NETFLIX)
+  logId      String?
+  password   String?
+  nb_max     Int
+  price      Float
+  start_date DateTime?
+  end_date   DateTime?
 
   Profile          Profile[]
   UserSubscription UserSubscription[]
@@ -86,17 +90,14 @@ model Profile {
 }
 
 model UserSubscription {
-  userId          Int
+  id              Int      @id @default(autoincrement())
   subscriptionId  Int
-  start_date      DateTime
-  end_date        DateTime
+  userId          Int
   user_start_date DateTime
   user_end_date   DateTime
 
   user         User         @relation(fields: [userId], references: [id])
   subscription Subscription @relation(fields: [subscriptionId], references: [id])
-
-  @@id([userId, subscriptionId])
 }
 
 //Enums
