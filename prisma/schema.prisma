@@ -49,8 +49,9 @@ model User {
   sessions      Session[]
   password      String?
   role          Role      @default(GUEST)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 
-  Profile          Profile[]
   UserSubscription UserSubscription[]
 }
 
@@ -63,31 +64,22 @@ model VerificationToken {
 }
 
 model Subscription {
-  id         Int              @id @default(autoincrement())
-  name       SubscriptionName @default(NETFLIX)
-  logId      String?
-  password   String?
-  nb_max     Int
-  price      Float
-  start_date DateTime?
-  end_date   DateTime?
+  id              Int              @id @default(autoincrement())
+  name            SubscriptionName @default(NETFLIX)
+  logId           String?
+  password        String?
+  nb_user_max     Int
+  nb_user_current Int              @default(0)
+  price           Float
+  start_date      DateTime?
+  end_date        DateTime?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 
-  Profile          Profile[]
   UserSubscription UserSubscription[]
 }
 
 //Pivots
-model Profile {
-  id             Int     @id @default(autoincrement())
-  subscriptionId Int
-  userId         Int?
-  isActive       Boolean @default(false)
-
-  subscription Subscription @relation(fields: [subscriptionId], references: [id])
-  user         User?        @relation(fields: [userId], references: [id])
-
-  @@unique([subscriptionId, userId])
-}
 
 model UserSubscription {
   id              Int      @id @default(autoincrement())

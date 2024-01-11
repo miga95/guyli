@@ -7,7 +7,7 @@ export default function LoginButton() {
     return (
         <button 
             onClick={async () => await signIn()}
-            className='p-2 bg-blue-200 rounded-lg'>
+            className='p-2 btn btn-accent rounded-lg font-semibold'>
                 Sign in
         </button>
     )

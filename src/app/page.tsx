@@ -1,20 +1,23 @@
-import { getServerSession } from "next-auth"
-import { authOptions } from "../../pages/api/auth/[...nextauth]"
-import LoginButton from "./components/LoginButton"
-import { signOut } from "next-auth/react"
-import LogoutButton from "./components/LogoutButton"
+"use client"
 
-export default async function Home() {
-  const session  = await getServerSession(authOptions)
-  if(session) {
-    return (
-      <div className="p-6 bg-red-200 text-center">
-        <p>{session.user?.name}</p>
-        <LogoutButton />
-      </div>
-    )
-  }
+import { useRouter } from "next/navigation"
+import Navbar from "./components/Navbar"
+import Main from "./components/Main"
+import { useSession } from "next-auth/react"
+import { useEffect } from "react"
+
+export default function Home() {
+  const session  = useSession()
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session.data)  router.push('/dashboard')
+  },[session])
+
   return(
-    <LoginButton />
+    <div className="h-full">
+      <Navbar />
+      <Main/>
+    </div>
   )
 }

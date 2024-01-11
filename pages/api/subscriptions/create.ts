@@ -14,8 +14,11 @@ export default async function handler(
         const newSubscription = await prisma.subscription.create({
           data: {
             name: data.name,
-            nb_max: parseInt(data.nb_max),
+            nb_user_max: parseInt(data.nb_user_max),
+            nb_user_current: data.nb_user_current,
             price: parseFloat(data.price),
+            logId: data.logId,
+            password: data.password,
           },
         });
         return res.status(201).json(newSubscription);

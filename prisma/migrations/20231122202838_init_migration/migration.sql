@@ -41,6 +41,8 @@ CREATE TABLE "User" (
     "image" TEXT,
     "password" TEXT,
     "role" "Role" NOT NULL DEFAULT 'GUEST',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -56,32 +58,28 @@ CREATE TABLE "VerificationToken" (
 CREATE TABLE "Subscription" (
     "id" SERIAL NOT NULL,
     "name" "SubscriptionName" NOT NULL DEFAULT 'NETFLIX',
-    "nb_max" INTEGER NOT NULL,
+    "logId" TEXT,
+    "password" TEXT,
+    "nb_user_max" INTEGER NOT NULL,
+    "nb_user_current" INTEGER NOT NULL DEFAULT 0,
     "price" DOUBLE PRECISION NOT NULL,
+    "start_date" TIMESTAMP(3),
+    "end_date" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Subscription_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Profile" (
+CREATE TABLE "UserSubscription" (
     "id" SERIAL NOT NULL,
     "subscriptionId" INTEGER NOT NULL,
-    "userId" INTEGER,
-    "isActive" BOOLEAN NOT NULL DEFAULT false,
-
-    CONSTRAINT "Profile_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "UserSubscription" (
     "userId" INTEGER NOT NULL,
-    "subscriptionId" INTEGER NOT NULL,
-    "start_date" TIMESTAMP(3) NOT NULL,
-    "end_date" TIMESTAMP(3) NOT NULL,
     "user_start_date" TIMESTAMP(3) NOT NULL,
     "user_end_date" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "UserSubscription_pkey" PRIMARY KEY ("userId","subscriptionId")
+    CONSTRAINT "UserSubscription_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -99,20 +97,11 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 -- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
--- CreateIndex
-CREATE UNIQUE INDEX "Profile_subscriptionId_userId_key" ON "Profile"("subscriptionId", "userId");
-
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Profile" ADD CONSTRAINT "Profile_subscriptionId_fkey" FOREIGN KEY ("subscriptionId") REFERENCES "Subscription"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Profile" ADD CONSTRAINT "Profile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserSubscription" ADD CONSTRAINT "UserSubscription_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

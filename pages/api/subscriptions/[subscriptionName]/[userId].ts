@@ -8,26 +8,29 @@ export default async function  handler(req: NextApiRequest, res: NextApiResponse
   const prisma = new PrismaClient();
 
   try{
-    const subscriptions = await prisma.subscription.findMany({
+    const availableSubscription = await prisma.subscription.findFirst({
       where: {
         name: subscriptionName,
+        nb_user_current: {
+          lt: 5
+        }
+      },
+      orderBy:{
+        nb_user_current: 'desc',
       },
       include: {
         UserSubscription: true,
       }
     });
-
-    const availableSubscription = subscriptions.find(subscription => 
-      subscription.UserSubscription.length < subscription.nb_max
-    );
+    
 
     if (!availableSubscription) {
       return res.status(404).json({ message: "No available subscription found" });
-    }
-
+    }    
     const today = moment().toDate();
     const nextMonth = moment().add(1, 'months').toDate();
 
+    // create new UserSubscription for the user
     const newUserSubscription = await prisma.userSubscription.create({
       data : {
         userId: userId,
@@ -36,6 +39,15 @@ export default async function  handler(req: NextApiRequest, res: NextApiResponse
         user_end_date: nextMonth,
       }
     })  
+    // then add +1 on the nb_user_current in subscription
+    await prisma.subscription.update({
+      where: {
+        id: newUserSubscription.subscriptionId
+      },
+      data: {
+        nb_user_current: availableSubscription?.nb_user_current + 1
+      },
+    })
     res.status(200).json(newUserSubscription);
   } catch (error) {
     console.error(error);
