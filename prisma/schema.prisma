@@ -14,7 +14,7 @@ datasource db {
 
 model Account {
   id                Int     @id @default(autoincrement())
-  userId            Int
+  userId            String
   type              String
   provider          String
   providerAccountId String
@@ -34,25 +34,9 @@ model Account {
 model Session {
   id           Int      @id @default(autoincrement())
   sessionToken String   @unique
-  userId       Int
+  userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-  id            Int       @id @default(autoincrement())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  password      String?
-  role          Role      @default(GUEST)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-
-  UserSubscription UserSubscription[]
 }
 
 model VerificationToken {
@@ -63,42 +47,57 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Subscription {
-  id              Int              @id @default(autoincrement())
-  name            SubscriptionName @default(NETFLIX)
-  logId           String?
-  password        String?
-  nb_user_max     Int
-  nb_user_current Int              @default(0)
-  price           Float
-  start_date      DateTime?
-  end_date        DateTime?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  password      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  UserSubscription UserSubscription[]
+  username String?
+  bio      String?
+  link     String?
+
+  followers  UserFollow[] @relation("follower")
+  followings UserFollow[] @relation("following")
+  posts      Post[]
+  likes      Like[]
 }
 
-//Pivots
+model Post {
+  id        String   @id @default(cuid())
+  content   String
+  parentId  String?
+  userId    String
+  createdAt DateTime @default(now())
 
-model UserSubscription {
-  id              Int      @id @default(autoincrement())
-  subscriptionId  Int
-  userId          Int
-  user_start_date DateTime
-  user_end_date   DateTime
-
-  user         User         @relation(fields: [userId], references: [id])
-  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes   Like[]
+  replies Post[] @relation("comments")
+  parent  Post?  @relation("comments", fields: [parentId], references: [id], onDelete: Cascade)
 }
 
-//Enums
-enum Role {
-  ADMIN
-  HOST
-  GUEST
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
-enum SubscriptionName {
-  NETFLIX
+model UserFollow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower  User @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
 }
