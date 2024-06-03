@@ -1,5 +1,5 @@
 
-import { PostHome } from "../../../../query/post.query";
+import { PostHome } from "../../query/post.query";
 import React from "react";
 import { PostLayout } from "./PostLayout";
 import Link from 'next/link'

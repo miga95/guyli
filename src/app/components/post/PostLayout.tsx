@@ -1,4 +1,4 @@
-import { PostHome } from '../../../../query/post.query'
+import { PostHome } from '../../query/post.query'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import clsx from 'clsx'
 import { PropsWithChildren } from 'react'

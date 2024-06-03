@@ -1,7 +1,7 @@
 import { Post } from "@/components/post/Post";
 import { getAuthSession } from "@/lib/auth"
 import prisma from "@/lib/prisma"
-import { getLatestPosts } from "../../../query/post.query";
+import { getLatestPosts } from "../query/post.query";
 import React from 'react'
 
 
