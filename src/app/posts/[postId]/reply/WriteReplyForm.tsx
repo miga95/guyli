@@ -17,9 +17,10 @@ export type WritePostFormValues = z.infer<typeof Schema>;
 type WritePostFormProps = {
     user: User | null ;
     onSubmit: (values: WritePostFormValues) => Promise<string>;
+    postId: string
 }
 
-export const WritePostForm = ({user, onSubmit}: WritePostFormProps)  =>  {
+export const WriteReplyForm = ({user, onSubmit, postId}: WritePostFormProps)  =>  {
     const form = useZodForm({
         schema: Schema,
     })
@@ -31,7 +32,7 @@ export const WritePostForm = ({user, onSubmit}: WritePostFormProps)  =>  {
             <Form 
                 form={form} 
                 onSubmit={async (values) => { 
-                    const  postId = await onSubmit(values);
+                    const  replyId = await onSubmit(values);
                     router.push(`/posts/${postId}`)
                     
                 }}

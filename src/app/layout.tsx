@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import { Inter } from 'next/font/google'
 import { NextFont } from 'next/dist/compiled/@next/font'
 import { Header } from './components/Header'
+import { Footer } from './components/Footer'
 
 
 export const metadata: Metadata = {
@@ -15,7 +16,12 @@ export const metadata: Metadata = {
 
 const inter : NextFont = Inter({subsets: ['latin']})
 
-export default function RootLayout({children}: { children: React.ReactNode }) {
+type LayoutProps = {
+  children: React.ReactNode;
+  modal?: React.ReactNode;
+}
+
+export default function RootLayout({children, modal}: LayoutProps) {
   return (
     <html lang="en" className='h-full'>
       <body className={clsx(inter.className, 'bg-background h-full')}>
@@ -26,7 +32,9 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
               <div className='flex-1 max-w-4xl m-auto py-12 w-full'>
                {children}
               </div>
+              <Footer />
             </div>
+            {modal}
             </Providers>
         </ThemeProvider>
       </body>
