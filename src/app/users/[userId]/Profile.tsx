@@ -1,10 +1,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { UserProfile } from "@/query/user.query"
+import Link from "next/link";
 import { PropsWithChildren } from "react"
 
-export const Profile = ({ user }: PropsWithChildren<{user:UserProfile}>) => {
-    console.log(user);
-    
+export const Profile = ({ user, children }: PropsWithChildren<{user:UserProfile}>) => { 
+    const removeHttp = (url: string) => {
+        return url.replace(/(^\w+:|^)\/\//, '');
+        };   
   return (
     <div className="mt-4 container">
         <div className="flex gap-2 items-start justify-between">
@@ -25,17 +27,31 @@ export const Profile = ({ user }: PropsWithChildren<{user:UserProfile}>) => {
         <div className="flex items-center gap-2 mt-4">
             <div className="flex -space-x-2">
                 {user.followers.map(f => (
-                    <Avatar size="sm" className="border-2 border-background" key={f.following.id}>
-                        {f.following.image ? (
-                            <AvatarImage src={f.following.image} alt={f.following.id}/>
+                    <Avatar size="sm" className="border-2 border-background" key={f.follower.id}>
+                        {f.follower.image ? (
+                            <AvatarImage src={f.follower.image} alt={f.follower.id}/>
                         ) : null}
                         <AvatarFallback >
-                            {f.following.username?.slice(0,2).toUpperCase()}
+                            {f.follower.username?.slice(0,2).toUpperCase()}
                         </AvatarFallback>
                     </Avatar>
                 ))}
             </div>
+                <p className="text-muted-foreground">{' • '}</p>
+                <p className="text-muted-foreground">{user._count.followers} followers</p>
+                {
+                    user.link ? (
+                        <>
+                            <p className="text-muted-foreground">{' • '}
+                                <Link className='text-muted-foreground hover:underline' href={user.link}>
+                                    {removeHttp(user.link)}
+                                </Link>
+                            </p>
+                        </>
+                    ) : null
+                }
         </div>
+        {children}
     </div>
   )
 }

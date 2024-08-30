@@ -43,9 +43,9 @@ CREATE TABLE "User" (
     "password" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "username" TEXT NOT NULL,
-    "bio" TEXT NOT NULL,
-    "link" TEXT NOT NULL,
+    "username" TEXT,
+    "bio" TEXT,
+    "link" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

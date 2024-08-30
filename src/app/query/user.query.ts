@@ -2,6 +2,7 @@ import { getAuthSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { postSelectQuery } from "./post.query";
+import { truncate } from "fs";
 
 const userQuery = {
     id: true,
@@ -43,6 +44,7 @@ export const getUserProfile = async (userId: string) => {
             _count: {
                 select: {
                     followers: true,
+                    // followings: true,
                     likes: true
                 }
             },
@@ -55,7 +57,7 @@ export const getUserProfile = async (userId: string) => {
             },
             followers: {
                 select: {
-                    following:{
+                    follower: {
                         select: {
                             id: true,
                             image: true,
@@ -73,4 +75,17 @@ export const getUserProfile = async (userId: string) => {
     })
 }
 
+export const getUserEdit = async () => {
+    const session = await getAuthSession();
+    if(!session) throw new Error('No session')
+    
+    return prisma.user.findUnique({
+        where: {
+            id: session?.user?.id,
+        },
+        select: userQuery,
+    })
+}
 export type UserProfile = NonNullable<Prisma.PromiseReturnType<typeof getUserProfile>>
+
+export type UserEdit = NonNullable<Prisma.PromiseReturnType<typeof getUserEdit>>

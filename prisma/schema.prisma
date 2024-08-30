@@ -63,8 +63,8 @@ model User {
   bio      String?
   link     String?
 
-  followers  UserFollow[] @relation("follower")
-  followings UserFollow[] @relation("following")
+  followers  UserFollow[] @relation("following") // Utilisateur qui suit d'autres utilisateurs
+  followings UserFollow[] @relation("follower") // Utilisateurs qui sont suivis par cet utilisateur
   posts      Post[]
   likes      Like[]
 }
