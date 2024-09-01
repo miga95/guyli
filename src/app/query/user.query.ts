@@ -78,11 +78,12 @@ export const getUserProfile = cache( async (userId: string) => {
 
 export const getUserEdit = async () => {
     const session = await getAuthSession();
-    if(!session) throw new Error('No session')
-    
+    if (!session || !session.user?.id) {
+        throw new Error('No session or user ID not found');
+    }    
     return prisma.user.findUnique({
         where: {
-            id: session?.user?.id,
+            id: session.user.id,
         },
         select: userQuery,
     })

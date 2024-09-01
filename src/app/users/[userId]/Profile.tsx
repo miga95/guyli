@@ -15,7 +15,7 @@ export const Profile = ({ user, children }: PropsWithChildren<{user:UserProfile}
                 <p>{user?.username}</p>
             </div>
             <Avatar size="lg">
-            {user.image ? <AvatarImage src={user.image} alt={user.username}  /> : null }
+            {user.image ? <AvatarImage src={user.image} alt={user.username ?? undefined}  /> : null }
             <AvatarFallback>{user?.username?.slice(0, 2).toUpperCase()}</AvatarFallback>
         </Avatar>
         </div>

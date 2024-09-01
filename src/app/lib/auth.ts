@@ -2,13 +2,14 @@ import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../pages/api/auth/[...nextauth]';
 import prisma from './prisma';
+import { CustomSession } from '../../../types'
 
 type ParametersGetServerSession =
   | []
   | [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']]
   | [NextApiRequest, NextApiResponse];
 
-export const getAuthSession = async (...parameters: ParametersGetServerSession) => {
+export const getAuthSession = async (...parameters: ParametersGetServerSession): Promise<CustomSession | null> => {
   const session = await getServerSession(...parameters, authOptions);
   if(session?.user?.email) {
     const user = await prisma.user.findUnique({
@@ -28,5 +29,5 @@ export const getAuthSession = async (...parameters: ParametersGetServerSession) 
     }
   }
   
-  return session;
+  return session as CustomSession;
 };

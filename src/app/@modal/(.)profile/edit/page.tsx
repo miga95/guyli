@@ -6,7 +6,7 @@ export default async function page() {
     const user = await getUserEdit()
 
   return (
-    <EditProfileModal user={user} editProfile={editProfile}/>
+    <EditProfileModal user={user!} editProfile={editProfile}/>
   )
 }
 

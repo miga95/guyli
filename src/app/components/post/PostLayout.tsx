@@ -16,8 +16,8 @@ type PostLayoutProps = PropsWithChildren<{
 export const PostLayout = ({className, user, createdAt, postId, children }: PostLayoutProps) => {
   return (
     <div className={clsx("flex w-full flex-row items-start p-4")}>
-        <Avatar>
-            {user.image ? <AvatarImage src={user.image} alt={user.username}  /> : null }
+        <Avatar size={'default'}>
+            {user.image ? <AvatarImage src={user.image} alt={user.username ?? undefined}  /> : null }
             <AvatarFallback>{user?.username?.slice(0, 2).toUpperCase()}</AvatarFallback>
         </Avatar>
         <div className='ml-4 flex w-full flex-col gap-2'>

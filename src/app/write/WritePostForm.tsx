@@ -27,7 +27,7 @@ export const WritePostForm = ({user, onSubmit}: WritePostFormProps)  =>  {
     const router = useRouter();
 
     return (
-        <PostLayout user={user}>
+        <PostLayout user={user!}>
             <Form 
                 form={form} 
                 onSubmit={async (values) => { 
