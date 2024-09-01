@@ -1,4 +1,4 @@
-'use client' // Error components must be Client Components
+'use client' 
  
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertTriangle } from 'lucide-react'
