@@ -32,8 +32,7 @@ export const WritePostForm = ({user, onSubmit}: WritePostFormProps)  =>  {
                 form={form} 
                 onSubmit={async (values) => { 
                     const  postId = await onSubmit(values);
-                    router.push(`/posts/${postId}`)
-                    
+                    router.push(`/`) 
                 }}
             >
                 <FormField control={form.control} name="content" render={({field}) => (

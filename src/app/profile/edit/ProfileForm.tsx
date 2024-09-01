@@ -1,5 +1,6 @@
 
 'use client'
+import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, useZodForm } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { UserEdit } from '@/query/user.query';
@@ -25,7 +26,7 @@ export const ProfileForm = ({ onSubmit, user } : ProfileFormProps) => {
         schema: FormScheme,
         defaultValues: {
             name: user.name ?? '',
-            username: user.username,
+            username: user.username ?? '',
             bio: user.bio ?? '',
             link: user.link ?? ''
         } 
@@ -34,13 +35,12 @@ export const ProfileForm = ({ onSubmit, user } : ProfileFormProps) => {
 
     return (
         <Form
-            className='space-y'
+            className='space-y-4'
             form={form}
             onSubmit={async (values) => {
                 const url = await onSubmit(values)
                 if(url){
                     router.push(url)
-                    router.refresh()
                 }
             }}
         >
@@ -50,15 +50,56 @@ export const ProfileForm = ({ onSubmit, user } : ProfileFormProps) => {
                 render={({field}) => (
                     <FormItem>
                         <FormLabel>Name</FormLabel>
-                        <FormControl>
-                            <Input placeholder="Mika" {...field}/>
-                        </FormControl>
+                            <FormControl>
+                                <Input placeholder="Mika" {...field}/>
+                            </FormControl>
                         <FormMessage />
                     </FormItem>
                 )}
-                >
-
-            </FormField>
+            />
+            <FormField
+                control={form.control}
+                name='username'
+                render={({field}) => (
+                    <FormItem>
+                        <FormLabel>Username</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Username" {...field}/>
+                            </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+            <FormField
+                control={form.control}
+                name='bio'
+                render={({field}) => (
+                    <FormItem>
+                        <FormLabel>Bio</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Bio" {...field}/>
+                            </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+            <FormField
+                control={form.control}
+                name='link'
+                render={({field}) => (
+                    <FormItem>
+                        <FormLabel>Link</FormLabel>
+                            <FormControl>
+                                <Input placeholder="https://..." {...field}/>
+                            </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+          
+            <div className='flex w-full justify-end'>
+                <Button size="sm"> Post </Button>
+            </div>
         </Form>
     )
 }

@@ -16,13 +16,13 @@ export const followUser = async (userId: string) => {
         }
     })
     if (isFollowing) {
-        await prisma.userFollow.delete({
+        const data = await prisma.userFollow.delete({
             where: {
                 id: isFollowing.id
             }
         })
     } else {
-        await prisma.userFollow.create({
+         const data = await prisma.userFollow.create({
             data: {
                 followerId: user.id,
                 followingId: userId

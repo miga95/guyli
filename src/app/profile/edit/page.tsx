@@ -1,6 +1,7 @@
 import { getUserEdit } from "@/query/user.query"
 import { ProfileForm } from "./ProfileForm"
 import { editProfile } from "./edit-profile.action"
+
 export default async function page() {
     const user = await getUserEdit()
 
