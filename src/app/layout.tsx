@@ -10,8 +10,8 @@ import { Footer } from './components/Footer'
 
 
 export const metadata: Metadata = {
-  title: 'Guylii',
-  description: 'Guylii app ',
+  title: 'Socialwave',
+  description: 'Social platform',
 }
 
 const inter : NextFont = Inter({subsets: ['latin']})
