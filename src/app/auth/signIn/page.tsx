@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -66,7 +67,7 @@ export default function SignIn() {
             )}
         />
         <Button className="block m-auto" >Sign In</Button>
-        <Link href="/auth/signUp" className="block text-center"> Doesn't have an account? Sign Up</Link>
+        <Link href="/auth/signUp" className="block text-center"> Don't have an account? Sign Up</Link>
     </Form>
   );
 }
