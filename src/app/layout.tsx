@@ -7,6 +7,7 @@ import { Inter } from 'next/font/google'
 import { NextFont } from 'next/dist/compiled/@next/font'
 import { Header } from './components/Header'
 import { Footer } from './components/Footer'
+import { Toaster } from "react-hot-toast";
 
 
 export const metadata: Metadata = {
@@ -30,6 +31,7 @@ export default function RootLayout({children, modal}: LayoutProps) {
             <div className='flex flex-col h-full'>
               <Header />
               <div className='flex-1 max-w-4xl m-auto py-12 w-full'>
+              <Toaster position="bottom-center" />
                {children}
               </div>
               <Footer />
