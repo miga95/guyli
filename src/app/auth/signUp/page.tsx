@@ -41,11 +41,13 @@ export default function SignUp() {
         className="space-y-4 px-4  w-3/4 sm:w-1/2 m-auto mt-8 py-12 px-6 rounded-lg"
         form={form} 
         onSubmit={async (values) => { 
-            const user = await createUser(values)
-            if(user){
+            const res = await createUser(values)
+            if(res.success){
                 toast.success('User created')
                 router.push('/auth/signIn')
-            } 
+            } else {
+                toast.error(res.message!)
+            }
         }}
     >
         <h1 className="text-center text-2xl font-semibold">Register</h1>
