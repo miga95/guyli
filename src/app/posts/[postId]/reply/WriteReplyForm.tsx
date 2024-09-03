@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { PostLayout } from "@/components/post/PostLayout";
 import { ContentTextArea } from "@/components/post/ContentTextArea";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const Schema = z.object({
     content: z.string().min(1).max(500)
@@ -39,11 +41,10 @@ export const WriteReplyForm = ({user, onSubmit, postId}: WritePostFormProps)  =>
             >
                 <FormField control={form.control} name="content" render={({field}) => (
                     <FormItem>
-                        <ContentTextArea {...field} />
-                        <FormMessage />
+                        <Textarea {...field}/>
                     </FormItem>
                 )} />
-                <div className="flex w-full justify-end">
+                <div className="flex w-full justify-end mt-4">
                     <Button size="sm">Post</Button>
                 </div>
             </Form>

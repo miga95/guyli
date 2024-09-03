@@ -1,4 +1,4 @@
-import { Home, PenSquare, User } from "lucide-react";
+import { Home, PenSquare, Search, User } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { buttonVariants } from "./ui/button";
@@ -43,6 +43,17 @@ export const Footer = async () => {
         )}
       >
         <User size={16} />
+      </Link>
+      <Link
+        href="/search"
+        className={clsx(
+          buttonVariants({
+            variant: "ghost",
+          }),
+          'flex-1'
+        )}
+      >
+        <Search size={16} />
       </Link>
     </div>
   );

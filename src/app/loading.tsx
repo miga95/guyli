@@ -1,9 +1,9 @@
 'use client'
-import { useSession } from 'next-auth/react'
+import { Loader } from 'lucide-react'
 import React from 'react'
 
-export default function Loader() {
+export default function loading() {
   return (
-    <div><span className="loading loading-infinity loading-lg fixed top-1/2 left-1/2"></span></div>
+    <Loader />
   )
 }

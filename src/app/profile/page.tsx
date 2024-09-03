@@ -11,11 +11,10 @@ export default async function ProfilePage() {
     if(!session?.user?.id) notFound()
     
     const user = await getUserProfile(session?.user?.id);
-    if(!user) notFound()
 
     return (
         <div>
-            <Profile user={user} >
+            <Profile user={user!} >
                 <form className="mt-4">
                     <Link 
                         className={buttonVariants({
@@ -28,7 +27,7 @@ export default async function ProfilePage() {
                 </form>
             </Profile>
             <div className="divide-y divide-muted mt-6 border-t border-accent">
-                {user.posts.map((post) => {
+                {user?.posts.map((post) => {
                     return <Post post={post} key={post.id}/>
                 })}
             </div>
