@@ -20,7 +20,9 @@ export default async function handler(
         },
       },
       select: {
+        id: true,
         username: true, 
+        image: true,
       },
     });
 
