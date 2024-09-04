@@ -12,7 +12,6 @@ export default async function handler(
   }
 
   try {
-    // Recherche des utilisateurs dont le nom commence par le 'username' fourni
     const users = await prisma.user.findMany({
       where: {
         username: {

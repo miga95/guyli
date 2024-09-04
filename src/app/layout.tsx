@@ -12,15 +12,15 @@ import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: 'Socialwave',
-  description: 'Social platform',
+  description: 'Mongolian Social platform',
 }
 
 const inter : NextFont = Inter({subsets: ['latin']})
 
-type LayoutProps = {
+type LayoutProps = Partial<{
   children: React.ReactNode;
   modal?: React.ReactNode;
-}
+}>
 
 export default function RootLayout({children, modal}: LayoutProps) {
   return (

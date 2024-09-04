@@ -4,7 +4,7 @@ import { Form, FormField, FormItem, FormMessage, useZodForm } from "@/components
 import { Input } from '@/components/ui/input';
 
 export default function Search() {
-    const [searchBar, setsearchBar] = useState()
+    const [searchBar, setsearchBar] = useState<string>()
     const [users, setUsers] = useState<any[]>([]); // Typage correct pour les utilisateurs
     console.log("HERE");
     
