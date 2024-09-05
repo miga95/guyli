@@ -28,9 +28,9 @@ export default function RootLayout({children, modal}: LayoutProps) {
       <body className={clsx(inter.className, 'bg-background h-full')}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <Providers>
-            <div className='flex flex-col h-full'>
+            <div className='flex flex-col h-full w-full'>
               <Header />
-              <div className='flex-1 max-w-4xl m-auto py-12 w-full'>
+              <div className='flex-1 max-w-4xl m-auto py-12 w-full mx-auto'>
               <Toaster position="bottom-center" />
                {children}
               </div>

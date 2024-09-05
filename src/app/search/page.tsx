@@ -40,7 +40,7 @@ export default function Search() {
   return (
     <div className="mt-5 w-3/4 sm:w-1/2 m-auto">
       <Input 
-        placeholder="Search"
+        placeholder="Search user"
         onChange={(e) => {
           setsearchBar(e.target.value);
         }}
