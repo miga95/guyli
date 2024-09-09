@@ -5,6 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, useZodF
 import { Input } from '@/components/ui/input';
 import { UserEdit } from '@/query/user.query';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { z } from 'zod'
 
 const FormScheme = z.object({
@@ -34,6 +35,7 @@ export const ProfileForm = ({ user } : ProfileFormProps) => {
 
         if (response.ok) {
             router.push('/profile');
+            toast.success('Profile updated')
         } else {
             console.error('Error updating profile');
         }
