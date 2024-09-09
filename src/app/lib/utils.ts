@@ -17,3 +17,19 @@ export function formatDate(input: string | number): string {
 export function absoluteUrl(path: string) {
   return `${process.env.NEXT_PUBLIC_APP_URL}${path}`
 }
+
+export const getInitials = (fullname: string): string => {
+  let initials = fullname
+      .split(' ')
+      .slice(0, 1)
+      .map((name) => {
+        return name.charAt(0)
+      })
+      .join('')
+
+  if (initials?.length === 1 && fullname.length > 1) {
+    initials = fullname.substring(0, 2)
+  }
+
+  return initials.toUpperCase()
+}
