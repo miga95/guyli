@@ -55,7 +55,7 @@ export const WritePostForm = ({user}: WritePostFormProps)  =>  {
                 form={form}
                 onSubmit={async (values) => {
                     await submitPost(values,user?.id); // Appel à l'API pour créer un post
-                    router.push(`/`); // Redirection après soumission
+                    router.push(`/home`); // Redirection après soumission
                 }}
             >
                 <FormField
