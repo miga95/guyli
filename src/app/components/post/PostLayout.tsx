@@ -5,6 +5,7 @@ import { PropsWithChildren } from 'react'
 import { MoreHorizontal } from 'lucide-react'
 import Link from 'next/link'
 import { formatDate } from '@/lib/date'
+import {getInitials} from "@/lib/utils";
 
 type PostLayoutProps = PropsWithChildren<{
     user: PostHome[ "user"],
@@ -18,7 +19,7 @@ export const PostLayout = ({className, user, createdAt, postId, children }: Post
     <div className={clsx("flex w-full flex-row items-start p-4")}>
         <Avatar size={'default'}>
             {user.image ? <AvatarImage src={user.image} alt={user.username ?? undefined}  /> : null }
-            <AvatarFallback>{user?.username?.slice(0, 2).toUpperCase()}</AvatarFallback>
+            <AvatarFallback>{getInitials(user?.username || "")}</AvatarFallback>
         </Avatar>
         <div className='ml-4 flex w-full flex-col gap-2'>
             <Link href={`/users/${user.id}`}>
