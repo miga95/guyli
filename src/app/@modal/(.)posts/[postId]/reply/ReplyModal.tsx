@@ -1,14 +1,12 @@
 'use client'
 
-import { WritePostFormValues } from '@/write/WritePostForm';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { usePathname, useRouter } from 'next/navigation'
 import { User } from '@prisma/client';
 import { WriteReplyForm } from '@/posts/[postId]/reply/WriteReplyForm';
 
-export const ReplyModal = ({ user, createReply, postId }: {
+export const ReplyModal = ({ user, postId }: {
     user: User
-    createReply: (values: WritePostFormValues) => Promise<string>;
     postId: string
 }) => {
     const router = useRouter();
@@ -19,7 +17,7 @@ export const ReplyModal = ({ user, createReply, postId }: {
         router.back();
     }}>
         <DialogContent>
-            <WriteReplyForm user={user} onSubmit={createReply} postId={postId}/>
+            <WriteReplyForm user={user}  postId={postId}/>
         </DialogContent> 
     </Dialog>
   )
