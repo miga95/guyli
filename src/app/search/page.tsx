@@ -47,7 +47,6 @@ export default function Search() {
       />
       <ul>
         {users.map((user) => {
-          console.log(user.id);
 
           return (
             <li key={user.id} className="p-2">

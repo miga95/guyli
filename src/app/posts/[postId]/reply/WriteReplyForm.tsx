@@ -38,8 +38,6 @@ export const WriteReplyForm = ({user, postId}: WritePostFormProps)  =>  {
                 body: JSON.stringify({content: values.content, userId, postId }),
             });
 
-            console.log(response);
-
             if (!response.ok) {
                 throw new Error('Failed to submit post');
             }
