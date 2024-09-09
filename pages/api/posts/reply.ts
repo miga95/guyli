@@ -14,7 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(400).json({ error: 'Content is required' });
         }
 
-        console.log("postId",postId)
         const post = await prisma.post.create({
             data: {
                 content: content,
@@ -23,7 +22,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         });
 
-        console.log(post);
 
         // Renvoie l'ID du post créé
         return res.status(201).json({ postId: post.id });
