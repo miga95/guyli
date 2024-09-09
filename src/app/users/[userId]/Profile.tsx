@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { UserProfile } from "@/query/user.query"
 import Link from "next/link";
 import { PropsWithChildren } from "react"
+import {getInitials} from "@/lib/utils";
 
 export const Profile = ({ user, children }: PropsWithChildren<{user:UserProfile}>) => { 
     const removeHttp = (url: string) => {
@@ -16,7 +17,7 @@ export const Profile = ({ user, children }: PropsWithChildren<{user:UserProfile}
             </div>
             <Avatar size="lg">
             {user.image ? <AvatarImage src={user.image} alt={user.username ?? undefined}  /> : null }
-            <AvatarFallback>{user?.username?.slice(0, 2).toUpperCase()}</AvatarFallback>
+            <AvatarFallback>{getInitials(user?.username || "")}</AvatarFallback>
         </Avatar>
         </div>
         {user.bio ? (
@@ -32,7 +33,7 @@ export const Profile = ({ user, children }: PropsWithChildren<{user:UserProfile}
                             <AvatarImage src={f.follower.image} alt={f.follower.id}/>
                         ) : null}
                         <AvatarFallback >
-                            {f.follower.username?.slice(0,2).toUpperCase()}
+                            {getInitials(f.follower.username?.slice(0,2).toUpperCase() || "")}
                         </AvatarFallback>
                     </Avatar>
                 ))}

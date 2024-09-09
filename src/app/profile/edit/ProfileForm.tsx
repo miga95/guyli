@@ -17,11 +17,32 @@ const FormScheme = z.object({
 export type ProfileFormType = z.infer<typeof FormScheme>;
 
 type ProfileFormProps = {
-    onSubmit: (values: ProfileFormType) => Promise<string | void >;
     user: UserEdit
 }
 
-export const ProfileForm = ({ onSubmit, user } : ProfileFormProps) => {
+export const ProfileForm = ({ user } : ProfileFormProps) => {
+
+
+    const handleSubmit = async (values: ProfileFormType) => {
+        const response = await fetch(`/api/profile/edit?userId=${user.id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+        });
+
+        if (response.ok) {
+            router.push('/profile');
+        } else {
+            console.error('Error updating profile');
+        }
+    };
+
+
+
+
+
     const form = useZodForm({
         schema: FormScheme,
         defaultValues: {
@@ -37,12 +58,7 @@ export const ProfileForm = ({ onSubmit, user } : ProfileFormProps) => {
         <Form
             className='space-y-4'
             form={form}
-            onSubmit={async (values) => {
-                const url = await onSubmit(values)
-                if(url){
-                    router.push(url)
-                }
-            }}
+            onSubmit={handleSubmit}
         >
             <FormField
                 control={form.control}

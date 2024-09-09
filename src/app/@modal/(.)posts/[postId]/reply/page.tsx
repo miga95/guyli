@@ -10,11 +10,7 @@ export default async function Page({params} : {
     const user = await getUser();
     
   return (
-    <ReplyModal postId={params.postId} user={user} createReply={async (values) => {
-        "use server"
-        const reply = await createReply(params.postId, values)
-        return reply
-    }} />
+    <ReplyModal postId={params.postId} user={user}  />
     )
 
 }
