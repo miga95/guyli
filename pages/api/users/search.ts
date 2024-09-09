@@ -6,7 +6,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { username } = req.query;
-  // Vérification si le paramètre 'username' est fourni
   if (!username || typeof username !== 'string') {
     return res.status(400).json({ error: 'Username query parameter is required' });
   }

@@ -12,6 +12,12 @@ type PostProps = {
 };
 
 export const Post = ({ post }: PostProps) => {
+
+    const currentUserId = post.user.id;
+    const isLikedInitial = post.likes.some((like) => like.userId === currentUserId);
+
+
+    console.log("post like", post)
   if (post){
     return (
       <PostLayout user={post.user} postId={post.id} createdAt={post.createdAt}>
@@ -21,7 +27,7 @@ export const Post = ({ post }: PostProps) => {
           ))}
         </Link>
         <div className="flex gap-2 items-center">
-          <LikeButton postId={post.id} isLiked={post.likes.length > 0} />
+            <LikeButton postId={post.id} userId={currentUserId} isLikedInitial={isLikedInitial} />
           <Link className={buttonVariants({variant: "ghost", size:"icon"})} href={`/posts/${post.id}/reply`} >
             <MessageCircle size={20}/>
           </Link>
