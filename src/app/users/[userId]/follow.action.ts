@@ -1,34 +1,50 @@
 'use server'
+
 import prisma from '@/lib/prisma';
-import { getUser } from '@/query/user.query';
+import { getAuthSession } from '@/lib/auth'; // Utiliser la session pour récupérer l'utilisateur connecté
 import { revalidatePath } from 'next/cache';
 
 export const followUser = async (userId: string) => {
-    const user = await getUser();
+    const session = await getAuthSession();
+
+    if (!session?.user?.id) {
+        throw new Error('User must be logged in to follow/unfollow.');
+    }
+
+    const currentUserId = session.user.id;
 
     const isFollowing = await prisma.userFollow.findFirst({
         where: {
-            followerId: user.id,
+            followerId: currentUserId,
             followingId: userId
         },
         select: {
             id: true
         }
-    })
+    });
+
     if (isFollowing) {
-        const data = await prisma.userFollow.delete({
+        await prisma.userFollow.delete({
             where: {
                 id: isFollowing.id
             }
-        })
+        });
     } else {
-         const data = await prisma.userFollow.create({
+        await prisma.userFollow.create({
             data: {
-                followerId: user.id,
+                followerId: currentUserId,
                 followingId: userId
             }
-        })
+        });
+
+        await prisma.notification.create({
+            data: {
+                recipientId: userId,
+                senderId: currentUserId,
+                type: 'follow',
+            },
+        });
     }
 
-    revalidatePath(`/users/${userId}`)
-}
+    revalidatePath(`/users/${userId}`);
+};

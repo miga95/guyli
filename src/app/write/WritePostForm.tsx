@@ -30,6 +30,7 @@ const submitPost = async (values: WritePostFormValues, userId: string|undefined)
             body: JSON.stringify({content: values.content, userId}),
         });
 
+
         if (!response.ok) {
             throw new Error('Failed to submit post');
         }

@@ -47,6 +47,22 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Notification {
+  id          String   @id @default(cuid())
+  recipientId String // Utilisateur qui reçoit la notification
+  senderId    String // Utilisateur qui a déclenché l'action (like, comment, follow)
+  type        String // Type de notification ("like", "comment", "follow")
+  postId      String? // ID du post concerné, s'il y en a un (pour les likes/comments)
+  isRead      Boolean  @default(false) // Notification lue ou non
+  createdAt   DateTime @default(now())
+
+  recipient User    @relation("notificationsReceived", fields: [recipientId], references: [id], onDelete: Cascade)
+  sender    User    @relation("notificationsSent", fields: [senderId], references: [id], onDelete: Cascade)
+  post      Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  User      User?   @relation(fields: [userId], references: [id])
+  userId    String?
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -63,10 +79,13 @@ model User {
   bio      String?
   link     String?
 
-  followers  UserFollow[] @relation("following") // Utilisateur qui suit d'autres utilisateurs
-  followings UserFollow[] @relation("follower") // Utilisateurs qui sont suivis par cet utilisateur
-  posts      Post[]
-  likes      Like[]
+  followers             UserFollow[]   @relation("following") // Utilisateur qui suit d'autres utilisateurs
+  followings            UserFollow[]   @relation("follower") // Utilisateurs qui sont suivis par cet utilisateur
+  posts                 Post[]
+  likes                 Like[]
+  notificationsReceived Notification[] @relation("notificationsReceived")
+  Notification          Notification[]
+  notificationsSent     Notification[] @relation("notificationsSent")
 }
 
 model Post {
@@ -76,10 +95,11 @@ model Post {
   userId    String
   createdAt DateTime @default(now())
 
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  likes   Like[]
-  replies Post[] @relation("comments")
-  parent  Post?  @relation("comments", fields: [parentId], references: [id], onDelete: Cascade)
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes        Like[]
+  replies      Post[]         @relation("comments")
+  parent       Post?          @relation("comments", fields: [parentId], references: [id], onDelete: Cascade)
+  Notification Notification[]
 }
 
 model Like {

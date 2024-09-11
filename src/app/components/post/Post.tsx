@@ -1,17 +1,21 @@
 "use client"
-import { PostHome } from "../../query/post.query";
+
+import { PostHome } from "@/query/post.query";
 import React, { useState } from "react";
 import { PostLayout } from "./PostLayout";
 import Link from 'next/link'
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Heart, MessageCircle } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { MessageCircle } from "lucide-react";
 import { LikeButton } from "./LikeButton";
+import { useSession } from 'next-auth/react';
 
 type PostProps = {
   post: PostHome;
 };
 
 export const Post = ({ post }: PostProps) => {
+
+    const { data: session } = useSession();
 
     const currentUserId = post.user.id;
     const [isLiked, setIsLiked] = useState(post.likes.some((like) => like.userId === currentUserId));
@@ -26,9 +30,33 @@ export const Post = ({ post }: PostProps) => {
             },
             body: JSON.stringify({ postId: post.id, userId: currentUserId }),
         });
-        
+
+        const currentPostResponse = await fetch(`/api/posts/${post.id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+        })
+
+          const currentPost = await currentPostResponse.json();
+
+              await fetch('/api/notifications/create', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                      recipientId: currentPost?.user.id,
+                      senderId: session?.user.id,
+                      type: 'like',
+                      postId: post.id,
+                  }),
+              });
+
+
         if (!response.ok) {
-            throw new Error("Failed to like the post.");
+            console.log("Failed to like the post.")
         }
         setIsLiked(!isLiked);
         setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
