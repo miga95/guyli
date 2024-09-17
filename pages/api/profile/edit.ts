@@ -4,9 +4,9 @@ import fs from "fs";
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import prisma from "@/lib/prisma";
 
-const region = process.env.NEXT_PUBLIC_AWS_S3_REGION;
-const accessKeyId = process.env.NEXT_PUBLIC_AWS_S3_ACCESS_KEY_ID;
-const secretAccessKey = process.env.NEXT_PUBLIC_AWS_S3_SECRET_ACCESS_KEY;
+const region = process.env.AWS_S3_REGION;
+const accessKeyId = process.env.AWS_S3_ACCESS_KEY_ID;
+const secretAccessKey = process.env.AWS_S3_SECRET_ACCESS_KEY;
 
 if (!region || !accessKeyId || !secretAccessKey) {
   throw new Error("Missing AWS S3 environment variables");
@@ -24,7 +24,7 @@ async function uploadFileToS3(fileBuffer: Buffer, fileName: string, userId: stri
   const fileKey = `${userId}/${fileName}`;
   
   const params = {
-    Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME,
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
     Key: `profilePicture/${fileKey}`,
     Body: fileBuffer,
     ContentType: "image/jpg", // Ajuster selon le type de fichier réel
@@ -36,7 +36,7 @@ async function uploadFileToS3(fileBuffer: Buffer, fileName: string, userId: stri
 
 async function deleteFileFromS3(fileKey: string) {
   const params = {
-      Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME,
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: fileKey,
   };
 
@@ -100,7 +100,7 @@ export default async function handler(
                     userId
                 );
 
-                s3ImageUrl = `https://${process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME}.s3.${region}.amazonaws.com/profilePicture/${fileKey}`;
+                s3ImageUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${region}.amazonaws.com/profilePicture/${fileKey}`;
             }
         }
     
