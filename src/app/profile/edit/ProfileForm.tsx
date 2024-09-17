@@ -12,7 +12,8 @@ const FormScheme = z.object({
     name: z.string().min(1).max(50),
     username: z.string().min(1).max(50),
     bio: z.string().max(500),
-    link: z.string().max(50)
+    link: z.string().max(50),
+    picture: z.any().optional()
 })
 
 export type ProfileFormType = z.infer<typeof FormScheme>;
@@ -23,15 +24,21 @@ type ProfileFormProps = {
 
 export const ProfileForm = ({ user } : ProfileFormProps) => {
 
-
     const handleSubmit = async (values: ProfileFormType) => {
-        const response = await fetch(`/api/profile/edit?userId=${user.id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values),
-        });
+        const formData = new FormData();
+        
+        formData.append('name', values.name);
+        formData.append('username', values.username);
+        formData.append('bio', values.bio);
+        formData.append('link', values.link);
+        if (values.picture) {
+            formData.append('file', values.picture); // Ajouter le fichier
+        }
+
+    const response = await fetch(`/api/profile/edit?userId=${user.id}`, {
+        method: 'POST',
+        body: formData, // Utiliser formData au lieu de JSON.stringify
+    });
 
         if (response.ok) {
             router.push('/profile');
@@ -41,17 +48,13 @@ export const ProfileForm = ({ user } : ProfileFormProps) => {
         }
     };
 
-
-
-
-
     const form = useZodForm({
         schema: FormScheme,
         defaultValues: {
             name: user.name ?? '',
             username: user.username ?? '',
             bio: user.bio ?? '',
-            link: user.link ?? ''
+            link: user.link ?? '',
         } 
     })
     const router = useRouter();
@@ -109,6 +112,25 @@ export const ProfileForm = ({ user } : ProfileFormProps) => {
                         <FormLabel>Link</FormLabel>
                             <FormControl>
                                 <Input placeholder="https://..." {...field}/>
+                            </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+            <FormField
+                control={form.control}
+                name='picture'
+                render={({field}) => (
+                    <FormItem>
+                        <FormLabel>Change profile picture</FormLabel>
+                            <FormControl>
+                            <Input 
+                                type="file"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0]; 
+                                    field.onChange(file);
+                                }}
+                            />
                             </FormControl>
                         <FormMessage />
                     </FormItem>

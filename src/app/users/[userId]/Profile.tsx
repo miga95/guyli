@@ -1,7 +1,8 @@
+"use client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { UserProfile } from "@/query/user.query"
 import Link from "next/link";
-import { PropsWithChildren } from "react"
+import { PropsWithChildren, useState } from "react"
 import {getInitials} from "@/lib/utils";
 
 export const Profile = ({ user, children }: PropsWithChildren<{user:UserProfile}>) => { 
@@ -16,9 +17,9 @@ export const Profile = ({ user, children }: PropsWithChildren<{user:UserProfile}
                 <p>{user?.username}</p>
             </div>
             <Avatar size="lg">
-            {user.image ? <AvatarImage src={user.image} alt={user.username ?? undefined}  /> : null }
-            <AvatarFallback>{getInitials(user?.username || "")}</AvatarFallback>
-        </Avatar>
+                {user.image ? <AvatarImage src={user.image} alt={user.username ?? undefined}  /> : null }
+                <AvatarFallback>{getInitials(user?.username || "")}</AvatarFallback>
+            </Avatar>
         </div>
         {user.bio ? (
             <p>{user.bio}</p>
