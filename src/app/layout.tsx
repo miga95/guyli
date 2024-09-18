@@ -31,7 +31,7 @@ export default function RootLayout({children, modal}: LayoutProps) {
             <div className='flex flex-col h-full w-full'>
               <Header />
               <div className='flex-1 max-w-4xl m-auto py-12 w-full mx-auto'>
-              <Toaster position="bottom-center" />
+              <Toaster position="top-center" />
                {children}
               </div>
               <Footer />

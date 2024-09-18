@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react';
-import { Scene, PerspectiveCamera, AmbientLight, DirectionalLight, WebGLRenderer } from 'three';
+import { Scene, PerspectiveCamera, AmbientLight, DirectionalLight, WebGLRenderer, Object3D, Object3DEventMap } from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+
 import { Button } from './ui/button';
 import Link from 'next/link';
 
@@ -17,18 +19,18 @@ export default function Main() {
         if (!containerRef.current) return;
 
         const scene = new Scene();
-        const fov = 30;
+        const fov = 100;
         const aspect = containerRef.current.clientWidth / containerRef.current.clientHeight; // Assurez-vous que cette division n'est pas par zéro
         const near = 0.1;
-        const far = 1000;
+        const far = 2000;
 
         // Setup camera
         const camera = new PerspectiveCamera(fov, aspect, near, far);
-        camera.position.set(-2, 0, 4);
+        camera.position.set(0, 40, 250);
 
         // Lighting
         const ambient = new AmbientLight(0x404040, 2);
-        const directionalLight = new DirectionalLight(0xffffff, 10);
+        const directionalLight = new DirectionalLight(0xffffff, 2);
         const directionalLight2 = new DirectionalLight(0xffffff, 2);
         directionalLight.position.set(-20, 20, -20);
         directionalLight2.position.set(10, 10, 10);
@@ -47,9 +49,9 @@ export default function Main() {
         // OrbitControls
         const controls = new OrbitControls(camera, renderer.domElement);
         // Load 3D model
-        let model;
+        let model: Object3D<Object3DEventMap>;
         const loader = new GLTFLoader();
-        loader.load("/assets/mesh/character_unpacked.gltf", function (gltf) {
+        loader.load("/assets/mesh_people/scene.gltf", function (gltf) {
             scene.add(gltf.scene);
             model = gltf.scene.children[0];
             animate();
@@ -59,7 +61,7 @@ export default function Main() {
         const animate = () => {
             requestAnimationFrame(animate);
             controls.update();
-            // if (model) model.rotation.z += 0.01;
+            if (model) model.rotation.z += 0.01;
             renderer.render(scene, camera);
         };
 
@@ -75,7 +77,7 @@ export default function Main() {
 
     return (
         <main className='max-sm:flex-col sm:flex sm:pt-16 '>
-            <div ref={containerRef} className='w-full sm:w-1/2 h-96' />
+            <div ref={containerRef} className='w-full sm:w-2/3 h-96' />
             <div className='flex flex-col justify-center'>
               <h1 className='text-4xl font-semibold text-center max-sm:pt-8'>Reinvent Your Social World</h1>
               <Button size='lg' className='mt-5 w-1/2 block mx-auto'><Link href="/auth/signUp">Explore Now</Link></Button>
