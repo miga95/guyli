@@ -40,7 +40,7 @@ export const Post = ({ post }: PostProps) => {
 
   if (post){
     return (  
-      <PostLayout user={post.user} postId={post.id} createdAt={post.createdAt}>
+      <PostLayout user={post.user} postId={post.id} createdAt={post.createdAt} postContent={post.content}>
         <Link href={`/posts/${post.id}`} className="text-sm text-foreground">
           {post.content.split("\n").map((c,index) => (
             <p key={index}>{c}</p>

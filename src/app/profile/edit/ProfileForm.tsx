@@ -72,7 +72,7 @@ export const ProfileForm = ({ user } : ProfileFormProps) => {
                     <FormItem>
                         <FormLabel>Name</FormLabel>
                             <FormControl>
-                                <Input placeholder="Mika" {...field}/>
+                                <Input {...field}/>
                             </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -85,7 +85,7 @@ export const ProfileForm = ({ user } : ProfileFormProps) => {
                     <FormItem>
                         <FormLabel>Username</FormLabel>
                             <FormControl>
-                                <Input placeholder="Username" {...field}/>
+                                <Input {...field}/>
                             </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -98,7 +98,7 @@ export const ProfileForm = ({ user } : ProfileFormProps) => {
                     <FormItem>
                         <FormLabel>Bio</FormLabel>
                             <FormControl>
-                                <Input placeholder="Bio" {...field}/>
+                                <Input  {...field}/>
                             </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -111,7 +111,7 @@ export const ProfileForm = ({ user } : ProfileFormProps) => {
                     <FormItem>
                         <FormLabel>Link</FormLabel>
                             <FormControl>
-                                <Input placeholder="https://..." {...field}/>
+                                <Input {...field}/>
                             </FormControl>
                         <FormMessage />
                     </FormItem>
